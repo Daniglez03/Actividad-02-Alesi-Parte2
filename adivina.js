@@ -1,7 +1,6 @@
 const WORDS = [
     "Alan",
     "Alberto",
-    "Andrés",
     "Gema",
     "Juan",
     "Sara",
@@ -10,37 +9,38 @@ const WORDS = [
     "Ricardo",
 ];
 
+
 const loadword = () => {
-    const randomName = Array.from(WORDS[Math.floor(Math.random() * WORDS.length)])
-    const promise = new Promise((resolve) => {
+    const randomName = Array.from(WORDS[Math.floor(Math.random() * WORDS.length)].toLowerCase())
+    return new Promise((resolve) => {
         resolve(randomName)
     })
-    return promise
 }
 
 const play = () => {
     let tamano;
-    let palabraCensurada = "";
-    const promise = new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         loadword()
             .then((randomName) => {
                 tamano = randomName.length
-                console.log(tamano)
-                console.log(randomName)
-                for (let index = 0; index < tamano; index++) {
-                    palabraCensurada += "X"
-                }
                 let contador = 1;
-                var frase
-                for (let index = contador; index < tamano + 1; index++) {
-                    if (randomName[index] = frase) {
-                        palabraCensurada += `${frase}`
-                    } else {
-                        palabraCensurada += "X"
+                let frase = "";
+                console.log(randomName);
+                /*for (let i = 0; i < tamano; i++) {
+                    let palabraCensuradaActual;
+                    for (let i = 0; i < tamano; i++) {
+                        if (randomName[0] === frase) {
+                            palabraCensuradaActual += frase.toUpperCase()
+                        } else {
+                            if (randomName[i] === frase) {
+                                palabraCensuradaActual += `${frase}`
+                            } else {
+                                palabraCensuradaActual += "X"
+                            }
+                        }
                     }
-                    console.log(palabraCensurada);
-                    frase = prompt(`Intruduce la ${contador++}º letra:  
-                    ${palabraCensurada}`)
+                    frase = prompt(`Intruduce la ${contador++}º letra: 
+                    ${palabraCensuradaActual}`)
                     if (frase == null) {
                         alert("Has cancelado el juego...")
                         break
@@ -50,27 +50,30 @@ const play = () => {
                         Debes empezar el juego...`)
                         break
                     }
-                    //letra ingresada a minúscula
-                    /*let letra = e.target.value.toLowerCase();
-                    let letters = randomName.toLowerCase().split('');
-                    letters.forEach(function (letter, i) {
-                        if (letra == letter) {
-                            palabraCensurada = palabraCensurada.replace(i * 2, letra);
+                }*/
+                let palabraCensuradaActual = "";
+                for (let i = 0; i < tamano; i++) {
+                    frase = prompt(`Intruduce la ${contador++}º letra: 
+                    ${palabraCensuradaActual}`)
+
+                    const cambios = randomName.map((palabraCensuradaActual, index) => {
+                        if (frase === palabraCensuradaActual && index === 0) {
+                            palabraCensuradaActual += frase.toUpperCase()
+                        } else {
+                            if (frase === randomName[index]) {
+                                palabraCensuradaActual += frase
+                            } else {
+                                palabraCensuradaActual += "X"
+                            }
                         }
                     });
-                    document.getElementById('printletra').innerHTML = replaceWord;
-                    console.log(replaceWord)*/
+                    console.log(palabraCensuradaActual);
+                    console.log(randomName);
+                    console.log({cambios});
                 }
             })
-        return promise
     });
 }
-
-/*for ( const i in randomName ) {
-    if ( letra == randomName [ i ] ) {
-        palabraCensurada = palabraConGuiones.replaceAt ( i * 2 ,
-        letra ) ;
-    } */
 const isPlaying = () => {
     let opcion = confirm("¿Quieres continuar?");
     if (opcion == true) {
@@ -80,5 +83,21 @@ const isPlaying = () => {
 
     }
 }
+//letra ingresada a minúscula
+/*let letra = e.target.value.toLowerCase();
+let letters = randomName.toLowerCase().split('');
+letters.forEach(function (letter, i) {
+    if (letra == letter) {
+        palabraCensurada = palabraCensurada.replace(i * 2, letra);
+    }
+});
+document.getElementById('printletra').innerHTML = replaceWord;
+console.log(replaceWord)*/
+
+/*app()
+    .then((randomName) =>{
+        play(randomName)
+    })
+*/
 
 play()
