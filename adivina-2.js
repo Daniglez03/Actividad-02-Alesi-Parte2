@@ -53,39 +53,38 @@ const play = () => {
                     }
                 }*/
                 let resumen
-                while (puntuacion < randomName.length && contador <= randomName.length) {
-                    for (let i = 0; i < randomName.length; i++) {
-                        frase = prompt(`Intruduce la ${contador++}º letra: 
-                        ${palabraCensurada.join('')}`)
-                        randomName.forEach((currentValue, index) => {
-                            if (currentValue.toLowerCase() === frase.toLowerCase()) {
-                                palabraCensurada[index] = frase.toLowerCase()
-                                puntuacion++
-                            }
-                            /*if (currentValue[0].toLowerCase() === frase.toLowerCase()) {
-                                palabraCensurada[0] = frase.toUpperCase()
-                                puntuacion++
-                            }*/
 
-                        });
-                        console.log(palabraCensurada);
-                        console.log(randomName);
-                        console.log(frase);
-                        if (frase == null) {
-                            alert("Has cancelado el juego...")
-                            break
+                for (let i = 0; i < tamano; i++) {
+                    frase = prompt(`Intruduce la ${contador++}º letra: 
+                    ${palabraCensurada.join('')}`)
+                    randomName.forEach((currentValue, index) => {
+                        if (currentValue[0].toLowerCase() === frase.toLowerCase()) {
+                            palabraCensurada[0] = frase.toUpperCase();
+                            puntuacion++
                         }
-                        if (isNaN(frase) === false) {
-                            alert(`Error el valor introducido no es una letra
-                            Debes empezar el juego...`)
-                            break
+                        if (currentValue.toLowerCase() === frase.toLowerCase()) {
+                            palabraCensurada[index] = frase
+                            puntuacion++
                         }
+                        
+                    });
+                    console.log(palabraCensurada);
+                    console.log(randomName);
+                    console.log(frase);
+                    if (frase == null) {
+                        alert("Has cancelado el juego...")
+                        break
+                    }
+                    if (isNaN(frase) === false) {
+                        alert(`Error el valor introducido no es una letra
+                        Debes empezar el juego...`)
+                        break
                     }
                 }
                 resumen = alert(`Palabra a adivinar:  ${randomName.join('')}
                 Tu intento: ${palabraCensurada.join('')}
                 Has obtenido: ${puntuacion} puntos`)
-                resolve(resumen)
+                    resolve(resumen)
             })
     });
 }
@@ -101,15 +100,17 @@ const isPlaying = (opcion) => {
     })
 }
 
-const app = () => {
-    loadWord()
-        .then((randomName) => {
-            play(randomName)
-        })
-        .then((opcion) => {
-            isPlaying(opcion)
-        })
-        .catch((err) => console.log(err))
+const app = async () => {
+    try {
+        const randomWord = await loadWord()
+        const game = await play(randomWord)
+        const condition = await isPlaying(game)
+        return condition
+    } catch (error) {
+        throw error
+    }
 }
-
 app()
+    .then((randomWord) => { play(randomWord)})
+    .then((game) => { isPlaying(game)})
+    .catch((error) => { console.log(error)})
